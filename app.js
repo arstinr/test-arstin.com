@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Load and play video
-    fetch('/public/videos.json')
+    fetch('/videos.json')
         .then(response => response.json())
         .then(data => {
             const videos = data.videos;

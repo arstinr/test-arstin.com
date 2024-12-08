@@ -1,8 +1,14 @@
 {
   "version": 2,
+  "builds": [
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "*.js", "use": "@vercel/static" },
+    { "src": "*.css", "use": "@vercel/static" },
+    { "src": "public/**/*", "use": "@vercel/static" }
+  ],
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/public/(.*)", "dest": "/public/$1" },
+    { "src": "/videos.json", "dest": "/public/videos.json" },
+    { "src": "/videos/(.*)", "dest": "/public/videos/$1" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 } 
