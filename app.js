@@ -1,26 +1,18 @@
-async function initializeVideo() {
-    try {
-        console.log('Starting video initialization...');
-        const response = await fetch('/public/videos.json');
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    const videoElement = document.getElementById('bgVideo');
 
-        const data = await response.json();
-        console.log('Available videos:', data.videos); // Debug log
-        
-        const randomIndex = Math.floor(Math.random() * data.videos.length);
-        const videoPath = data.videos[randomIndex];
-        
-        console.log('Trying to load video from:', videoPath); // Debug log
-        
-        const videoElement = document.getElementById('background-video');
-        videoElement.src = videoPath;
+    fetch('/videos.json')
+        .then(response => response.json())
+        .then(data => {
+            const videos = data.videos;
+            const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+            videoElement.src = randomVideo;
+            videoElement.play().catch(error => {
+                console.error('Error attempting to play video:', error);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching video list:', error);
+        });
+});
 
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-document.addEventListener('DOMContentLoaded', initializeVideo); 
