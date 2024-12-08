@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/videos/(.*)",
+      "dest": "/public/videos/$1"
+    },
+    {
+      "src": "/videos.json",
+      "dest": "/public/videos.json"
+    }
+  ],
+  "public": true
+} 

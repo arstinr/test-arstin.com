@@ -1,13 +1,25 @@
 async function initializeVideo() {
     try {
-        // Use the correct path for videos.json
-        const response = await fetch('/videos.json');
+        console.log('Starting video initialization...'); // Debug log
+        
+        // Try with and without the /public prefix
+        let response;
+        try {
+            response = await fetch('/videos.json');
+            if (!response.ok) {
+                response = await fetch('/public/videos.json');
+            }
+        } catch (e) {
+            console.error('Fetch failed:', e);
+            throw e;
+        }
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
+
         const data = await response.json();
-        
-        console.log('Loaded videos:', data); // Debug log
+        console.log('Loaded videos data:', data); // Debug log
         
         if (!data.videos || !data.videos.length) {
             throw new Error('No videos found in videos.json');
@@ -23,15 +35,22 @@ async function initializeVideo() {
             throw new Error('Video element not found');
         }
 
-        // Make sure video path starts with forward slash
-        videoElement.src = videoPath.startsWith('/') ? videoPath : '/' + videoPath;
+        // Try both with and without /public prefix
+        const fullPath = videoPath.startsWith('/') ? videoPath : '/' + videoPath;
+        console.log('Attempting to load video from:', fullPath); // Debug log
+        
+        videoElement.src = fullPath;
         
         videoElement.onerror = (e) => {
             console.error('Video loading error:', e);
+            // Try alternative path with /public prefix
+            const altPath = '/public' + fullPath;
+            console.log('Trying alternative path:', altPath);
+            videoElement.src = altPath;
         };
 
         videoElement.onloadeddata = () => {
-            console.log('Video loaded successfully');
+            console.log('Video loaded successfully from:', videoElement.src);
         };
 
     } catch (error) {
