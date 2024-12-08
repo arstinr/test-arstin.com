@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const videoElement = document.getElementById('bgVideo');
 
-    fetch('/videos.json')
+    fetch('/public/videos.json')
         .then(response => response.json())
         .then(data => {
             const videos = data.videos;
